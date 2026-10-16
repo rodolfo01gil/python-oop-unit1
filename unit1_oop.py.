@@ -1,0 +1,128 @@
+"""
+===========================================================
+Unit 1 DISCUSSION: Python OOP, Namespaces, and Copying
+===========================================================
+
+This program demonstrates inheritance, class and instance
+namespaces, shallow copying, and deep copying.
+"""
+
+from copy import copy, deepcopy
+
+
+# TODO 1: Create a parent class
+
+class ParentClass:
+    category = "Person"
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def display_info(self):
+        print(f"Name: {self.name}, Age: {self.age}")
+
+
+# TODO 2: Create a child class using inheritance
+
+class ChildClass(ParentClass):
+    school_name = "Generic University"
+
+    def __init__(self, name, age, student_id, courses):
+        super().__init__(name, age)
+        self.student_id = student_id
+        self.courses = courses
+
+    def enroll_course(self, course):
+        self.courses.append(course)
+
+    def display_info(self):
+        super().display_info()
+        print(f"Student ID: {self.student_id}")
+        print(f"School: {self.school_name}")
+        print(f"Courses: {self.courses}")
+
+
+# TODO 3: Demonstrate class and instance namespaces
+
+def demonstrate_namespaces():
+    print("\n=== Namespace Demonstration ===")
+
+    student1 = ChildClass("Dana", 22, "S101", ["Python"])
+    student2 = ChildClass("Alex", 24, "S102", ["Networking"])
+
+    # Access class variable through the class
+    print("Class variable:", ChildClass.school_name)
+
+    # Access class variable through an object
+    print("Object class variable:", student1.school_name)
+
+    # Add an attribute to only one object
+    student1.graduation_year = 2027
+
+    # Display instance namespaces
+    print("\nStudent 1 namespace:", student1.__dict__)
+    print("Student 2 namespace:", student2.__dict__)
+
+    # Display class namespace
+    print("\nClass namespace:", list(ChildClass.__dict__.keys()))
+
+
+# TODO 4: Demonstrate shallow and deep copying
+
+def demonstrate_copying():
+    print("\n=== Copy Demonstration ===")
+
+    # Create an object containing a mutable list
+    original = ChildClass(
+        "Dana", 22, "S101", ["Python", "Networking"]
+    )
+
+    # Shallow copy shares the original nested list
+    shallow = copy(original)
+
+    # Deep copy creates an independent copy of the list
+    deep = deepcopy(original)
+
+    # Modify the original object's list
+    original.courses.append("Cybersecurity")
+
+    print("Original courses:", original.courses)
+    print("Shallow copy courses:", shallow.courses)
+    print("Deep copy courses:", deep.courses)
+
+    # The shallow copy reflects changes to the shared list.
+    # The deep copy remains unchanged because its list is separate.
+
+
+# TODO 5: Create and test objects in main()
+
+def main():
+    print("=== Unit 1 OOP Assignment ===")
+
+    print("\n=== Parent Object ===")
+
+    person1 = ParentClass("Cleo", 45)
+    person1.display_info()
+
+    print("\n=== Child Object ===")
+
+    student1 = ChildClass(
+        "Dana", 22, "S101", ["Python", "Networking"]
+    )
+
+    student1.display_info()
+
+    # Demonstrate the student-created extension
+    print("\n=== Student Extension ===")
+
+    student1.enroll_course("Cybersecurity")
+    print("Updated courses:", student1.courses)
+
+    # Demonstrate namespaces and copying
+    demonstrate_namespaces()
+    demonstrate_copying()
+
+
+if __name__ == "__main__":
+    main()
